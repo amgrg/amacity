@@ -17,7 +17,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/api/search')
-def search_items():
+def search_shops():
     query = request.args.get('q', '').strip().lower()
     app.logger.info(f"Received search query: {query}")
     
@@ -25,35 +25,30 @@ def search_items():
     try:
         cursor = conn.cursor()
         sql_query = '''
-            SELECT items.id, items.name, items.description, items.price,
-                   shops.id AS shop_id, shops.name AS shop_name,
-                   locations.city, locations.address
-            FROM items
-            JOIN shops ON items.shop_id = shops.id
+            SELECT shops.id, shops.name, shops.description, 
+                   locations.address, locations.city
+            FROM shops
             JOIN locations ON shops.id = locations.shop_id
-            WHERE LOWER(items.name) LIKE ? OR LOWER(items.description) LIKE ?
+            WHERE LOWER(shops.name) LIKE ? OR LOWER(shops.description) LIKE ?
             LIMIT 20
         '''
         search_param = f'%{query}%'
         app.logger.info(f"Executing SQL query: {sql_query} with params: {search_param}")
         cursor.execute(sql_query, (search_param, search_param))
-        items = cursor.fetchall()
+        shops = cursor.fetchall()
         
-        items_list = []
-        for item in items:
-            items_list.append({
-                'id': item['id'],
-                'name': item['name'],
-                'description': item['description'] or 'No description available',
-                'price': item['price'],
-                'shop_id': item['shop_id'],
-                'shop_name': item['shop_name'],
-                'city': item['city'],
-                'address': item['address']
+        shops_list = []
+        for shop in shops:
+            shops_list.append({
+                'id': shop['id'],
+                'name': shop['name'],
+                'description': shop['description'] or 'No description available',
+                'address': shop['address'],
+                'city': shop['city']
             })
         
-        app.logger.info(f"Found {len(items_list)} results for query: {query}")
-        return jsonify(items_list)
+        app.logger.info(f"Found {len(shops_list)} results for query: {query}")
+        return jsonify(shops_list)
     except sqlite3.Error as e:
         app.logger.error(f"An error occurred during search: {str(e)}")
         return jsonify({"error": f"An error occurred during search: {str(e)}"}), 500
@@ -65,17 +60,17 @@ def test_db():
     conn = get_db_connection()
     try:
         cursor = conn.cursor()
-        cursor.execute("SELECT COUNT(*) FROM items")
-        items_count = cursor.fetchone()[0]
         cursor.execute("SELECT COUNT(*) FROM shops")
         shops_count = cursor.fetchone()[0]
-        cursor.execute("SELECT * FROM items LIMIT 1")
-        sample_item = cursor.fetchone()
+        cursor.execute("SELECT COUNT(*) FROM locations")
+        locations_count = cursor.fetchone()[0]
+        cursor.execute("SELECT * FROM shops LIMIT 1")
+        sample_shop = cursor.fetchone()
         return jsonify({
             "status": "success",
-            "items_count": items_count,
             "shops_count": shops_count,
-            "sample_item": dict(sample_item) if sample_item else None
+            "locations_count": locations_count,
+            "sample_shop": dict(sample_shop) if sample_shop else None
         })
     except sqlite3.Error as e:
         app.logger.error(f"Database test failed: {str(e)}")

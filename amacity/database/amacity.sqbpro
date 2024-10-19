@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="amacity.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2023"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="items" custom_title="0" dock_id="1" table="4,5:mainitems"/><dock_state state="000000ff00000000fd0000000100000002000005c100000390fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000000005c10000012600ffffff000002710000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="categories" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="35"/><column index="2" value="151"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="items" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort><column index="1" mode="0"/></sort><column_widths><column index="1" value="35"/><column index="2" value="239"/><column index="3" value="300"/><column index="4" value="55"/><column index="5" value="94"/><column index="6" value="54"/><column index="7" value="78"/><column index="8" value="215"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="locations" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="35"/><column index="2" value="54"/><column index="3" value="87"/><column index="4" value="87"/><column index="5" value="300"/><column index="6" value="63"/><column index="7" value="119"/><column index="8" value="52"/><column index="9" value="77"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="order_items" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="35"/><column index="2" value="58"/><column index="3" value="53"/><column index="4" value="56"/><column index="5" value="36"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="orders" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="35"/><column index="2" value="52"/><column index="3" value="86"/><column index="4" value="44"/><column index="5" value="71"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">INSERT INTO items (name, description, price, stock_quantity, shop_id, category_id, created_at) VALUES
+-- Artisan Crafts (Category 1)
+('Handmade Ceramic Vase', 'Elegant blue and white design, 30cm tall', 45.99, 10, 1, 1, datetime('now')),
+('Mosaic Wall Mirror', 'Colorful geometric pattern, 50cm diameter', 89.99, 5, 1, 1, datetime('now')),
+('Hand-woven Basket', 'Natural fibers, perfect for storage', 29.99, 15, 2, 1, datetime('now')),
+('Artisanal Scented Candle', 'Lavender and vanilla scent, 50 hours burn time', 19.99, 30, 2, 1, datetime('now')),
+('Handcrafted Leather Wallet', 'Genuine Italian leather, brown', 39.99, 20, 3, 1, datetime('now')),
+
+-- Fresh Produce (Category 2)
+('Organic Tomatoes', 'Locally grown, 1kg pack', 3.99, 50, 4, 2, datetime('now')),
+('Fresh Mozzarella', 'Locally produced, 250g ball', 4.99, 40, 4, 2, datetime('now')),
+('Organic Mixed Salad Greens', 'Assorted leaves, 200g pack', 2.99, 30, 5, 2, datetime('now')),
+('Freshly Baked Sourdough Bread', 'Artisanal loaf, 500g', 4.50, 25, 5, 2, datetime('now')),
+('Organic Free-Range Eggs', 'Local farm, dozen', 3.99, 60, 6, 2, datetime('now')),
+
+-- Books &amp; Stationery (Category 3)
+('Italian Cookbook', 'Traditional recipes from Emilia-Romagna', 24.99, 15, 7, 3, datetime('now')),
+('Ravenna City Guide', 'Comprehensive travel guide, latest edition', 14.99, 25, 7, 3, datetime('now')),
+('Handmade Journal', 'Leather-bound, 200 pages', 29.99, 10, 8, 3, datetime('now')),
+('Calligraphy Set', 'Pen and ink set with instruction book', 34.99, 8, 8, 3, datetime('now')),
+('Local History Book', 'Illustrated history of Ravenna', 19.99, 20, 9, 3, datetime('now')),
+
+-- Home Decor (Category 4)
+('Decorative Throw Pillow', 'Byzantine-inspired design, 45x45cm', 24.99, 15, 10, 4, datetime('now')),
+('Table Lamp', 'Mosaic base with linen shade', 59.99, 8, 10, 4, datetime('now')),
+('Framed Local Artwork', 'Print of Ravenna landmarks, 30x40cm', 39.99, 10, 11, 4, datetime('now')),
+('Ceramic Flower Pot', 'Hand-painted, suitable for indoor plants', 19.99, 20, 11, 4, datetime('now')),
+('Decorative Wall Clock', 'Rustic wooden design, 40cm diameter', 29.99, 12, 12, 4, datetime('now')),
+
+-- Additional items (repeat and vary as needed to reach 200)
+('Handmade Silk Scarf', 'Vibrant colors, 100% silk', 49.99, 10, 1, 1, datetime('now')),
+('Artisanal Cheese Selection', 'Assortment of local cheeses, 500g', 22.99, 15, 4, 2, datetime('now')),
+('Historical Fiction Novel', 'Set in medieval Ravenna', 16.99, 25, 7, 3, datetime('now')),
+('Aromatherapy Diffuser', 'Ceramic, with essential oil samples', 39.99, 10, 10, 4, datetime('now')),
+('Hand-painted Ceramic Plates', 'Set of 4, traditional patterns', 59.99, 8, 1, 1, datetime('now')),
+('Organic Honey', 'Local wildflower honey, 500g jar', 8.99, 30, 5, 2, datetime('now')),
+('Leather-bound Sketchbook', 'A4 size, 100 pages', 27.99, 15, 8, 3, datetime('now')),
+('Macramé Wall Hanging', 'Handcrafted, bohemian style', 34.99, 7, 11, 4, datetime('now')),
+('Glass Blown Ornaments', 'Set of 3, multicolored', 29.99, 12, 2, 1, datetime('now')),
+('Artisanal Pasta Selection', 'Assorted shapes, locally made, 1kg', 11.99, 20, 6, 2, datetime('now'))
+
+
+;</sql><sql name="SQL 3*">DELETE from items</sql><current_tab id="0"/></tab_sql></sqlb_project>
