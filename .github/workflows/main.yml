@@ -1,0 +1,79 @@
+name: Python Web App CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    
+    - name: Lint with flake8
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    
+    - name: Run tests
+      run: |
+        pytest
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Deploy to Production
+      env:
+        PYTHONANYWHERE_USERNAME: ${{ secrets.PYTHONANYWHERE_USERNAME }}
+        PYTHONANYWHERE_TOKEN: ${{ secrets.PYTHONANYWHERE_TOKEN }}
+      run: |
+        # Install PythonAnywhere CLI tool
+        pip install pythonanywhere
+
+        # Update the code on PythonAnywhere
+        pa_autopilot_username=$PYTHONANYWHERE_USERNAME
+        pa_autopilot_token=$PYTHONANYWHERE_TOKEN
+        
+        # Create deployment script
+        echo "#!/bin/bash
+        cd /home/$PYTHONANYWHERE_USERNAME/myapp
+        git pull
+        source /home/$PYTHONANYWHERE_USERNAME/.virtualenvs/myapp-env/bin/activate
+        pip install -r requirements.txt
+        touch /var/www/$PYTHONANYWHERE_USERNAME\_pythonanywhere_com_wsgi.py
+        " > deploy.sh
+        
+        chmod +x deploy.sh
+        ./deploy.sh
