@@ -3,7 +3,11 @@ import datetime
 import os
 
 def create_database():
-    db_path = os.path.join('C:', 'amacity', 'database', 'amacity.db')
+    # Use relative path from database setup directory to database
+    # Works cross-platform (Windows, Linux, Mac)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(base_dir, '..', 'amacity', 'database', 'amacity.db')
+    db_path = os.path.normpath(db_path)
     
     try:
         os.makedirs(os.path.dirname(db_path), exist_ok=True)
