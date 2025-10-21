@@ -87,5 +87,48 @@ def test_db():
     finally:
         conn.close()
 
+@app.route('/api/featured')
+def featured_items():
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        # Get 8 random featured items from different shops
+        sql_query = '''
+            SELECT items.id, items.name, items.description, items.price,
+                   shops.id AS shop_id, shops.name AS shop_name,
+                   locations.city, locations.address,
+                   categories.name AS category_name
+            FROM items
+            JOIN shops ON items.shop_id = shops.id
+            JOIN locations ON shops.id = locations.shop_id
+            JOIN categories ON items.category_id = categories.id
+            ORDER BY RANDOM()
+            LIMIT 8
+        '''
+        cursor.execute(sql_query)
+        items = cursor.fetchall()
+
+        items_list = []
+        for item in items:
+            items_list.append({
+                'id': item['id'],
+                'name': item['name'],
+                'description': item['description'] or 'No description available',
+                'price': item['price'],
+                'shop_id': item['shop_id'],
+                'shop_name': item['shop_name'],
+                'city': item['city'],
+                'address': item['address'],
+                'category': item['category_name']
+            })
+
+        app.logger.info(f"Returned {len(items_list)} featured items")
+        return jsonify(items_list)
+    except sqlite3.Error as e:
+        app.logger.error(f"An error occurred while fetching featured items: {str(e)}")
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+    finally:
+        conn.close()
+
 if __name__ == '__main__':
     app.run(debug=True)
