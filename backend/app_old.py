@@ -7,7 +7,11 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 def get_db_connection():
-    db_path = os.path.join('C:', 'amacity', 'database', 'amacity.db')
+    # Use relative path from backend directory to database
+    # Works cross-platform (Windows, Linux, Mac)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(base_dir, '..', 'amacity', 'database', 'amacity.db')
+    db_path = os.path.normpath(db_path)
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
